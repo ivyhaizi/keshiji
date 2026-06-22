@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844">
+  <rect width="390" height="844" fill="#f6f8fb"/>
+  <rect width="390" height="54" fill="#1677ff"/>
+  <text x="195" y="35" text-anchor="middle" fill="#fff" font-size="17" font-family="Arial">上课记录</text>
+  <text x="16" y="88" fill="#111827" font-size="17" font-weight="700" font-family="Arial">课时流水</text>
+  <rect x="16" y="106" width="358" height="92" rx="10" fill="#fff" stroke="#e6ebf2"/>
+  <text x="36" y="142" fill="#111827" font-size="17" font-weight="700" font-family="Arial">陈曦</text>
+  <text x="36" y="166" fill="#667085" font-size="13" font-family="Arial">钢琴一对一 · 常规上课</text>
+  <text x="334" y="154" text-anchor="middle" fill="#e11d48" font-size="22" font-weight="700" font-family="Arial">-1</text>
+  <text x="36" y="186" fill="#667085" font-size="12" font-family="Arial">2026-06-20 18:30</text>
+  <rect x="16" y="216" width="358" height="92" rx="10" fill="#fff" stroke="#e6ebf2"/>
+  <text x="36" y="252" fill="#111827" font-size="17" font-weight="700" font-family="Arial">林小雨</text>
+  <text x="36" y="276" fill="#667085" font-size="13" font-family="Arial">课时充值 · 手动充值</text>
+  <text x="334" y="264" text-anchor="middle" fill="#16a34a" font-size="22" font-weight="700" font-family="Arial">+10</text>
+  <text x="36" y="296" fill="#667085" font-size="12" font-family="Arial">2026-06-21 12:00</text>
+  <rect x="0" y="780" width="390" height="64" fill="#fff" stroke="#e6ebf2"/>
+  <text x="39" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">首页</text>
+  <text x="117" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">学员</text>
+  <text x="195" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">打卡</text>
+  <text x="273" y="818" text-anchor="middle" fill="#1677ff" font-size="13" font-family="Arial">记录</text>
+  <text x="351" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">我的</text>
+</svg>

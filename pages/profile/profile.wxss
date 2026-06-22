@@ -1,0 +1,49 @@
+.org-card {
+  box-sizing: border-box;
+  padding: 34rpx;
+  border-radius: 18rpx;
+  background: #111827;
+  color: #ffffff;
+}
+
+.org-name {
+  font-size: 38rpx;
+  font-weight: 800;
+}
+
+.org-desc {
+  margin-top: 10rpx;
+  color: #cbd5e1;
+}
+
+.action-list {
+  overflow: hidden;
+}
+
+.row-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 100%;
+  height: 98rpx;
+  padding: 0 24rpx;
+  border-radius: 0;
+  border-bottom: 1rpx solid #edf1f7;
+  background: #ffffff;
+  color: #111827;
+  font-size: 28rpx;
+  text-align: left;
+}
+
+.row-button::after {
+  border: 0;
+}
+
+.row-button:last-child {
+  border-bottom: 0;
+}
+
+.danger-row {
+  color: #e11d48;
+}

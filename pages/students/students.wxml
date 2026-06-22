@@ -1,0 +1,49 @@
+<view class="page">
+  <view class="section">
+    <view class="section-title">新增学员</view>
+    <view class="card form-card">
+      <view class="field">
+        <text class="field-label">学员姓名</text>
+        <input class="input" placeholder="请输入学员姓名" value="{{form.name}}" data-key="name" bindinput="onInput" />
+      </view>
+      <view class="field">
+        <text class="field-label">家长姓名</text>
+        <input class="input" placeholder="如：王妈妈" value="{{form.guardian}}" data-key="guardian" bindinput="onInput" />
+      </view>
+      <view class="field">
+        <text class="field-label">联系电话</text>
+        <input class="input" type="number" placeholder="用于后续绑定家长端" value="{{form.phone}}" data-key="phone" bindinput="onInput" />
+      </view>
+      <view class="field">
+        <text class="field-label">报名课程</text>
+        <picker range="{{courseNames}}" value="{{courseIndex}}" bindchange="onCourseChange">
+          <view class="input picker-text">{{courseNames[courseIndex]}}</view>
+        </picker>
+      </view>
+      <view class="field">
+        <text class="field-label">初始课时</text>
+        <input class="input" type="digit" placeholder="如：20" value="{{form.remaining}}" data-key="remaining" bindinput="onInput" />
+      </view>
+      <button class="primary-button" bindtap="addStudent">保存学员</button>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">学员列表</view>
+    <block wx:if="{{students.length}}">
+      <view class="student card" wx:for="{{students}}" wx:key="id">
+        <view class="student-main">
+          <view>
+            <view class="student-name">{{item.name}}</view>
+            <view class="student-meta">{{item.courseName}} · {{item.guardian || '未填家长'}}</view>
+          </view>
+          <view class="student-hours">{{item.remaining}}</view>
+        </view>
+        <view class="student-actions">
+          <button class="ghost-button small-button" data-id="{{item.id}}" bindtap="recharge">充 10 课时</button>
+        </view>
+      </view>
+    </block>
+    <view wx:else class="card empty">暂无学员，先添加一个学员</view>
+  </view>
+</view>

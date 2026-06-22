@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844">
+  <rect width="390" height="844" fill="#f6f8fb"/>
+  <rect width="390" height="54" fill="#1677ff"/>
+  <text x="195" y="35" text-anchor="middle" fill="#fff" font-size="17" font-family="Arial">上课打卡</text>
+  <text x="16" y="88" fill="#111827" font-size="17" font-weight="700" font-family="Arial">上课打卡</text>
+  <rect x="16" y="106" width="358" height="410" rx="10" fill="#fff" stroke="#e6ebf2"/>
+  <text x="36" y="140" fill="#344054" font-size="13" font-family="Arial">选择学员</text>
+  <rect x="36" y="152" width="318" height="42" rx="8" fill="#fff" stroke="#d7deea"/>
+  <text x="52" y="179" fill="#111827" font-size="13" font-family="Arial">陈曦</text>
+  <rect x="36" y="214" width="318" height="72" rx="8" fill="#f0f7ff"/>
+  <text x="56" y="242" fill="#667085" font-size="12" font-family="Arial">当前剩余课时</text>
+  <text x="56" y="270" fill="#1677ff" font-size="24" font-weight="700" font-family="Arial">12</text>
+  <rect x="274" y="236" width="64" height="24" rx="12" fill="#dcfce7"/>
+  <text x="306" y="253" text-anchor="middle" fill="#15803d" font-size="12" font-family="Arial">余额正常</text>
+  <text x="36" y="322" fill="#344054" font-size="13" font-family="Arial">课程</text>
+  <rect x="36" y="334" width="318" height="42" rx="8" fill="#fff" stroke="#d7deea"/>
+  <text x="52" y="361" fill="#111827" font-size="13" font-family="Arial">钢琴一对一</text>
+  <text x="36" y="402" fill="#344054" font-size="13" font-family="Arial">扣减课时</text>
+  <rect x="36" y="414" width="318" height="42" rx="8" fill="#fff" stroke="#d7deea"/>
+  <text x="52" y="441" fill="#111827" font-size="13" font-family="Arial">1</text>
+  <rect x="36" y="468" width="318" height="42" rx="8" fill="#1677ff"/>
+  <text x="195" y="495" text-anchor="middle" fill="#fff" font-size="15" font-family="Arial">确认打卡并消课</text>
+  <text x="16" y="560" fill="#111827" font-size="17" font-weight="700" font-family="Arial">批量打卡预留</text>
+  <rect x="16" y="578" width="358" height="86" rx="10" fill="#fff" stroke="#e6ebf2"/>
+  <text x="36" y="612" fill="#111827" font-size="15" font-weight="700" font-family="Arial">后续可扩展班级批量点名</text>
+  <text x="36" y="638" fill="#667085" font-size="13" font-family="Arial">支持请假、补卡、缺勤和统一消课</text>
+  <rect x="0" y="780" width="390" height="64" fill="#fff" stroke="#e6ebf2"/>
+  <text x="39" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">首页</text>
+  <text x="117" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">学员</text>
+  <text x="195" y="818" text-anchor="middle" fill="#1677ff" font-size="13" font-family="Arial">打卡</text>
+  <text x="273" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">记录</text>
+  <text x="351" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">我的</text>
+</svg>

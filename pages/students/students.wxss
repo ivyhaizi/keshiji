@@ -1,0 +1,54 @@
+.form-card {
+  padding: 24rpx;
+}
+
+.picker-text {
+  display: flex;
+  align-items: center;
+  color: #111827;
+}
+
+.student {
+  margin-bottom: 18rpx;
+  padding: 24rpx;
+}
+
+.student-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.student-name {
+  color: #111827;
+  font-size: 32rpx;
+  font-weight: 800;
+}
+
+.student-meta {
+  margin-top: 8rpx;
+  color: #667085;
+  font-size: 24rpx;
+}
+
+.student-hours {
+  min-width: 104rpx;
+  color: #1677ff;
+  font-size: 42rpx;
+  font-weight: 800;
+  text-align: right;
+}
+
+.student-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20rpx;
+}
+
+.small-button {
+  width: 220rpx;
+  height: 64rpx;
+  margin: 0;
+  font-size: 24rpx;
+  line-height: 64rpx;
+}

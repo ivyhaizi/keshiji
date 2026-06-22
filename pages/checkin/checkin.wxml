@@ -1,0 +1,45 @@
+<view class="page">
+  <view class="section">
+    <view class="section-title">上课打卡</view>
+    <view class="card form-card">
+      <view class="field">
+        <text class="field-label">选择学员</text>
+        <picker range="{{studentNames}}" value="{{studentIndex}}" bindchange="onStudentChange">
+          <view class="input picker-text">{{studentNames[studentIndex] || '暂无学员'}}</view>
+        </picker>
+      </view>
+      <view class="balance-box">
+        <view>
+          <view class="balance-label">当前剩余课时</view>
+          <view class="balance-value">{{selectedStudent.remaining || 0}}</view>
+        </view>
+        <view class="{{selectedStudent.remaining <= 3 ? 'balance-status danger' : 'balance-status'}}">
+          {{selectedStudent.remaining <= 3 ? '余额偏低' : '余额正常'}}
+        </view>
+      </view>
+      <view class="field">
+        <text class="field-label">课程</text>
+        <picker range="{{courseNames}}" value="{{courseIndex}}" bindchange="onCourseChange">
+          <view class="input picker-text">{{courseNames[courseIndex] || '暂无课程'}}</view>
+        </picker>
+      </view>
+      <view class="field">
+        <text class="field-label">扣减课时</text>
+        <input class="input" type="digit" value="{{hours}}" bindinput="onHoursInput" />
+      </view>
+      <view class="field">
+        <text class="field-label">课堂备注</text>
+        <input class="input" placeholder="如：常规上课、补卡、试听" value="{{note}}" bindinput="onNoteInput" />
+      </view>
+      <button class="primary-button" bindtap="submitCheckin">确认打卡并消课</button>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">批量打卡预留</view>
+    <view class="card todo-card">
+      <view class="todo-title">后续可扩展班级批量点名</view>
+      <view class="muted">按班级选择多个学员，支持请假、补卡、缺勤和统一消课。</view>
+    </view>
+  </view>
+</view>

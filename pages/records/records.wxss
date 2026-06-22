@@ -1,0 +1,33 @@
+.record {
+  margin-bottom: 18rpx;
+  padding: 24rpx;
+}
+
+.record-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.record-title {
+  color: #111827;
+  font-size: 32rpx;
+  font-weight: 800;
+}
+
+.record-subtitle,
+.record-time {
+  margin-top: 8rpx;
+  color: #667085;
+  font-size: 24rpx;
+}
+
+.record-hours {
+  color: #e11d48;
+  font-size: 36rpx;
+  font-weight: 800;
+}
+
+.record-hours.plus {
+  color: #16a34a;
+}

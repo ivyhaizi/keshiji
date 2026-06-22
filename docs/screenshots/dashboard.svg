@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844">
+  <rect width="390" height="844" fill="#f6f8fb"/>
+  <rect width="390" height="54" fill="#1677ff"/>
+  <text x="195" y="35" text-anchor="middle" fill="#fff" font-size="17" font-family="Arial">课时记</text>
+  <rect x="16" y="76" width="358" height="96" rx="12" fill="#1677ff"/>
+  <text x="36" y="115" fill="#fff" font-size="24" font-weight="700" font-family="Arial">课时记</text>
+  <text x="36" y="142" fill="#eaf4ff" font-size="14" font-family="Arial">教务、消课、记录一处管理</text>
+  <rect x="292" y="100" width="62" height="24" rx="12" fill="none" stroke="#fff"/>
+  <text x="323" y="117" text-anchor="middle" fill="#fff" font-size="12" font-family="Arial">免费试用</text>
+  <rect x="16" y="190" width="170" height="88" rx="10" fill="#fff" stroke="#e6ebf2"/>
+  <rect x="204" y="190" width="170" height="88" rx="10" fill="#fff" stroke="#e6ebf2"/>
+  <rect x="16" y="296" width="170" height="88" rx="10" fill="#fff" stroke="#e6ebf2"/>
+  <rect x="204" y="296" width="170" height="88" rx="10" fill="#fff" stroke="#e6ebf2"/>
+  <text x="36" y="230" fill="#111827" font-size="24" font-weight="700" font-family="Arial">2</text>
+  <text x="36" y="255" fill="#667085" font-size="13" font-family="Arial">学员</text>
+  <text x="224" y="230" fill="#111827" font-size="24" font-weight="700" font-family="Arial">20</text>
+  <text x="224" y="255" fill="#667085" font-size="13" font-family="Arial">剩余课时</text>
+  <text x="36" y="336" fill="#111827" font-size="24" font-weight="700" font-family="Arial">1</text>
+  <text x="36" y="361" fill="#667085" font-size="13" font-family="Arial">本月消课</text>
+  <text x="224" y="336" fill="#f97316" font-size="24" font-weight="700" font-family="Arial">0</text>
+  <text x="224" y="361" fill="#667085" font-size="13" font-family="Arial">低余额</text>
+  <text x="16" y="426" fill="#111827" font-size="17" font-weight="700" font-family="Arial">快捷操作</text>
+  <rect x="16" y="444" width="170" height="48" rx="8" fill="#1677ff"/>
+  <rect x="204" y="444" width="170" height="48" rx="8" fill="#fff" stroke="#cbd5e1"/>
+  <text x="101" y="474" text-anchor="middle" fill="#fff" font-size="15" font-family="Arial">上课打卡</text>
+  <text x="289" y="474" text-anchor="middle" fill="#1f2937" font-size="15" font-family="Arial">新增学员</text>
+  <text x="16" y="534" fill="#111827" font-size="17" font-weight="700" font-family="Arial">最近记录</text>
+  <rect x="16" y="552" width="358" height="96" rx="10" fill="#fff" stroke="#e6ebf2"/>
+  <text x="36" y="590" fill="#111827" font-size="15" font-weight="700" font-family="Arial">陈曦 · 钢琴一对一</text>
+  <text x="36" y="616" fill="#667085" font-size="13" font-family="Arial">2026-06-20 18:30</text>
+  <text x="334" y="604" text-anchor="middle" fill="#e11d48" font-size="20" font-weight="700" font-family="Arial">-1</text>
+  <rect x="0" y="780" width="390" height="64" fill="#fff" stroke="#e6ebf2"/>
+  <text x="39" y="818" text-anchor="middle" fill="#1677ff" font-size="13" font-family="Arial">首页</text>
+  <text x="117" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">学员</text>
+  <text x="195" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">打卡</text>
+  <text x="273" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">记录</text>
+  <text x="351" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">我的</text>
+</svg>

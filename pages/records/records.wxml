@@ -1,0 +1,20 @@
+<view class="page">
+  <view class="section">
+    <view class="section-title">课时流水</view>
+    <block wx:if="{{records.length}}">
+      <view class="record card" wx:for="{{records}}" wx:key="id">
+        <view class="record-main">
+          <view>
+            <view class="record-title">{{item.studentName}}</view>
+            <view class="record-subtitle">{{item.courseName}} · {{item.note}}</view>
+          </view>
+          <view class="record-hours {{item.type === 'recharge' ? 'plus' : ''}}">
+            {{item.type === 'recharge' ? '+' : '-'}}{{item.hours}}
+          </view>
+        </view>
+        <view class="record-time">{{item.createdAt}}</view>
+      </view>
+    </block>
+    <view wx:else class="card empty">暂无记录</view>
+  </view>
+</view>

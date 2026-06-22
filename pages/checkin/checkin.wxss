@@ -1,0 +1,54 @@
+.form-card {
+  padding: 24rpx;
+}
+
+.picker-text {
+  display: flex;
+  align-items: center;
+}
+
+.balance-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+  border-radius: 14rpx;
+  background: #f0f7ff;
+}
+
+.balance-label {
+  color: #667085;
+  font-size: 24rpx;
+}
+
+.balance-value {
+  margin-top: 6rpx;
+  color: #1677ff;
+  font-size: 46rpx;
+  font-weight: 800;
+}
+
+.balance-status {
+  padding: 8rpx 18rpx;
+  border-radius: 999rpx;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: 24rpx;
+  font-weight: 700;
+}
+
+.balance-status.danger {
+  background: #fff1f2;
+  color: #e11d48;
+}
+
+.todo-card {
+  padding: 24rpx;
+}
+
+.todo-title {
+  margin-bottom: 8rpx;
+  color: #111827;
+  font-weight: 800;
+}

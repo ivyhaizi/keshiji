@@ -1,0 +1,26 @@
+<view class="page">
+  <view class="section">
+    <view class="org-card">
+      <view class="org-name">{{profile.org.name}}</view>
+      <view class="org-desc">当前为云开发免费试用数据</view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">数据管理</view>
+    <view class="card action-list">
+      <button class="row-button" bindtap="previewExport">
+        <text>导出备份预览</text>
+        <text class="muted">CSV/Excel 预留</text>
+      </button>
+      <button class="row-button" bindtap="showRoadmap">
+        <text>家校协同预留</text>
+        <text class="muted">家长绑定/通知</text>
+      </button>
+      <button class="row-button danger-row" bindtap="resetData">
+        <text>重置演示数据</text>
+        <text>清空本地修改</text>
+      </button>
+    </view>
+  </view>
+</view>

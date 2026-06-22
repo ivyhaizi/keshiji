@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844">
+  <rect width="390" height="844" fill="#f6f8fb"/>
+  <rect width="390" height="54" fill="#1677ff"/>
+  <text x="195" y="35" text-anchor="middle" fill="#fff" font-size="17" font-family="Arial">我的</text>
+  <rect x="16" y="76" width="358" height="110" rx="12" fill="#111827"/>
+  <text x="36" y="122" fill="#fff" font-size="22" font-weight="700" font-family="Arial">课时记演示机构</text>
+  <text x="36" y="150" fill="#cbd5e1" font-size="14" font-family="Arial">当前为本地免费试用数据</text>
+  <text x="16" y="230" fill="#111827" font-size="17" font-weight="700" font-family="Arial">数据管理</text>
+  <rect x="16" y="248" width="358" height="174" rx="10" fill="#fff" stroke="#e6ebf2"/>
+  <text x="36" y="284" fill="#111827" font-size="15" font-family="Arial">导出备份预览</text>
+  <text x="300" y="284" fill="#667085" font-size="12" font-family="Arial">CSV/Excel</text>
+  <line x1="36" y1="306" x2="354" y2="306" stroke="#edf1f7"/>
+  <text x="36" y="342" fill="#111827" font-size="15" font-family="Arial">家校协同预留</text>
+  <text x="282" y="342" fill="#667085" font-size="12" font-family="Arial">家长绑定/通知</text>
+  <line x1="36" y1="364" x2="354" y2="364" stroke="#edf1f7"/>
+  <text x="36" y="400" fill="#e11d48" font-size="15" font-family="Arial">重置演示数据</text>
+  <text x="282" y="400" fill="#e11d48" font-size="12" font-family="Arial">清空本地修改</text>
+  <rect x="0" y="780" width="390" height="64" fill="#fff" stroke="#e6ebf2"/>
+  <text x="39" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">首页</text>
+  <text x="117" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">学员</text>
+  <text x="195" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">打卡</text>
+  <text x="273" y="818" text-anchor="middle" fill="#7a869a" font-size="13" font-family="Arial">记录</text>
+  <text x="351" y="818" text-anchor="middle" fill="#1677ff" font-size="13" font-family="Arial">我的</text>
+</svg>

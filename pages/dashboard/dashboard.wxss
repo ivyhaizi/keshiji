@@ -1,0 +1,98 @@
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  min-height: 176rpx;
+  margin-bottom: 28rpx;
+  padding: 32rpx;
+  border-radius: 18rpx;
+  background: linear-gradient(135deg, #1677ff 0%, #13c2c2 100%);
+  color: #ffffff;
+}
+
+.hero-title {
+  font-size: 46rpx;
+  font-weight: 800;
+}
+
+.hero-subtitle {
+  margin-top: 10rpx;
+  opacity: 0.9;
+}
+
+.hero-badge {
+  padding: 8rpx 18rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.6);
+  border-radius: 999rpx;
+  font-size: 24rpx;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18rpx;
+}
+
+.stat {
+  padding: 28rpx;
+}
+
+.stat-value {
+  color: #111827;
+  font-size: 42rpx;
+  font-weight: 800;
+}
+
+.stat-value.warning {
+  color: #f97316;
+}
+
+.stat-label {
+  margin-top: 8rpx;
+  color: #667085;
+  font-size: 24rpx;
+}
+
+.quick-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18rpx;
+}
+
+.recent-card {
+  padding: 8rpx 24rpx;
+}
+
+.record-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #edf1f7;
+}
+
+.record-row:last-child {
+  border-bottom: 0;
+}
+
+.record-title {
+  color: #111827;
+  font-weight: 700;
+}
+
+.record-time {
+  margin-top: 8rpx;
+  color: #667085;
+  font-size: 24rpx;
+}
+
+.record-hours {
+  color: #e11d48;
+  font-size: 32rpx;
+  font-weight: 800;
+}
+
+.record-hours.plus {
+  color: #16a34a;
+}
