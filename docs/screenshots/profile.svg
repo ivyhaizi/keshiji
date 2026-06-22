@@ -3,7 +3,7 @@
   <rect width="390" height="54" fill="#1677ff"/>
   <text x="195" y="35" text-anchor="middle" fill="#fff" font-size="17" font-family="Arial">我的</text>
   <rect x="16" y="76" width="358" height="110" rx="12" fill="#111827"/>
-  <text x="36" y="122" fill="#fff" font-size="22" font-weight="700" font-family="Arial">课时记演示机构</text>
+  <text x="36" y="122" fill="#fff" font-size="22" font-weight="700" font-family="Arial">课时小伙伴演示机构</text>
   <text x="36" y="150" fill="#cbd5e1" font-size="14" font-family="Arial">当前为本地免费试用数据</text>
   <text x="16" y="230" fill="#111827" font-size="17" font-weight="700" font-family="Arial">数据管理</text>
   <rect x="16" y="248" width="358" height="174" rx="10" fill="#fff" stroke="#e6ebf2"/>

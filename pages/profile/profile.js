@@ -4,7 +4,7 @@ Page({
   data: {
     profile: {
       org: {
-        name: "课时记演示机构"
+        name: "课时小伙伴演示机构"
       },
       totals: {
         studentCount: 0,

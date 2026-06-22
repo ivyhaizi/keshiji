@@ -7,7 +7,7 @@
     "pages/profile/profile"
   ],
   "window": {
-    "navigationBarTitleText": "课时记",
+    "navigationBarTitleText": "课时小伙伴",
     "navigationBarBackgroundColor": "#1677ff",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#f6f8fb"

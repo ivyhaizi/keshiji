@@ -1,7 +1,7 @@
 <view class="page dashboard-page">
   <view class="hero">
     <view>
-      <view class="hero-title">课时记</view>
+      <view class="hero-title">课时小伙伴</view>
       <view class="hero-subtitle">教务、消课、记录一处管理</view>
     </view>
     <view class="hero-badge">免费试用</view>

@@ -16,7 +16,7 @@ const COLLECTIONS = {
   lessonRecords: "lesson_records"
 };
 
-const DEFAULT_ORG_NAME = "课时记演示机构";
+const DEFAULT_ORG_NAME = "课时小伙伴演示机构";
 
 function ok(data = {}) {
   return { ok: true, data };

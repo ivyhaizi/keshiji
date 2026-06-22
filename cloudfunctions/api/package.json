@@ -1,7 +1,7 @@
 {
-  "name": "keshiji-api",
+  "name": "keshixiaohuoban-api",
   "version": "1.0.0",
-  "description": "课时记云开发 API",
+  "description": "课时小伙伴云开发 API",
   "main": "index.js",
   "dependencies": {
     "wx-server-sdk": "~3.0.1"

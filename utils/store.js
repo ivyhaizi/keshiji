@@ -1,4 +1,4 @@
-const STORAGE_KEY = "keshiji_demo_data";
+const STORAGE_KEY = "keshixiaohuoban_demo_data";
 
 const defaultData = {
   courses: [

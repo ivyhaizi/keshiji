@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844">
   <rect width="390" height="844" fill="#f6f8fb"/>
   <rect width="390" height="54" fill="#1677ff"/>
-  <text x="195" y="35" text-anchor="middle" fill="#fff" font-size="17" font-family="Arial">课时记</text>
+  <text x="195" y="35" text-anchor="middle" fill="#fff" font-size="17" font-family="Arial">课时小伙伴</text>
   <rect x="16" y="76" width="358" height="96" rx="12" fill="#1677ff"/>
-  <text x="36" y="115" fill="#fff" font-size="24" font-weight="700" font-family="Arial">课时记</text>
+  <text x="36" y="115" fill="#fff" font-size="24" font-weight="700" font-family="Arial">课时小伙伴</text>
   <text x="36" y="142" fill="#eaf4ff" font-size="14" font-family="Arial">教务、消课、记录一处管理</text>
   <rect x="292" y="100" width="62" height="24" rx="12" fill="none" stroke="#fff"/>
   <text x="323" y="117" text-anchor="middle" fill="#fff" font-size="12" font-family="Arial">免费试用</text>

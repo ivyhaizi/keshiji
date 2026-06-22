@@ -1,5 +1,5 @@
 {
-  "description": "课时记 MVP 微信小程序",
+  "description": "课时小伙伴 MVP 微信小程序",
   "packOptions": {
     "ignore": [],
     "include": []
@@ -32,8 +32,8 @@
   "compileType": "miniprogram",
   "cloudfunctionRoot": "cloudfunctions/",
   "libVersion": "3.7.0",
-  "appid": "wxa8c4bda14c1330a2",
-  "projectname": "keshiji",
+  "appid": "wxcf57d447d8205deb",
+  "projectname": "keshixiaohuoban",
   "condition": {},
   "simulatorPluginLibVersion": {},
   "editorSetting": {}
