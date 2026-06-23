@@ -18,11 +18,11 @@ Page({
     }
   },
 
-  goCheckin() {
-    wx.switchTab({ url: "/pages/checkin/checkin" });
-  },
-
   goStudents() {
     wx.switchTab({ url: "/pages/students/students" });
+  },
+
+  goCourses() {
+    wx.switchTab({ url: "/pages/courses/courses" });
   }
 });

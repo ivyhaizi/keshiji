@@ -1,8 +1,8 @@
 {
   "pages": [
     "pages/dashboard/dashboard",
+    "pages/courses/courses",
     "pages/students/students",
-    "pages/checkin/checkin",
     "pages/records/records",
     "pages/profile/profile"
   ],
@@ -23,12 +23,12 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/students/students",
-        "text": "学员"
+        "pagePath": "pages/courses/courses",
+        "text": "课程"
       },
       {
-        "pagePath": "pages/checkin/checkin",
-        "text": "打卡"
+        "pagePath": "pages/students/students",
+        "text": "学员"
       },
       {
         "pagePath": "pages/records/records",

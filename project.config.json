@@ -31,7 +31,7 @@
   },
   "compileType": "miniprogram",
   "cloudfunctionRoot": "cloudfunctions/",
-  "libVersion": "3.7.0",
+  "libVersion": "3.16.1",
   "appid": "wxcf57d447d8205deb",
   "projectname": "keshixiaohuoban",
   "condition": {},

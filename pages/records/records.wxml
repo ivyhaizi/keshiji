@@ -12,7 +12,11 @@
             {{item.type === 'recharge' ? '+' : '-'}}{{item.hours}}
           </view>
         </view>
-        <view class="record-time">{{item.createdAt}}</view>
+        <view wx:if="{{item.type === 'checkin'}}" class="record-detail">
+          <view>打卡对象日：{{item.targetDateText || '-'}}</view>
+          <view>打卡实施日：{{item.operatedAtText || '-'}}</view>
+        </view>
+        <view wx:else class="record-time">操作时间：{{item.operatedAtText || item.createdAt}}</view>
       </view>
     </block>
     <view wx:else class="card empty">暂无记录</view>

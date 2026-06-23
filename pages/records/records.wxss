@@ -16,10 +16,17 @@
 }
 
 .record-subtitle,
-.record-time {
+.record-time,
+.record-detail {
   margin-top: 8rpx;
   color: #667085;
   font-size: 24rpx;
+}
+
+.record-detail {
+  display: grid;
+  gap: 6rpx;
+  padding-top: 8rpx;
 }
 
 .record-hours {

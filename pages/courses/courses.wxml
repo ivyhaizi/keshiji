@@ -1,0 +1,56 @@
+<view class="page">
+  <view class="section" id="course-create-form">
+    <view class="section-title">新增课程</view>
+    <view class="card form-card">
+      <view class="field">
+        <text class="field-label">课程名称</text>
+        <input class="input" placeholder="如：钢琴一对一" value="{{createForm.name}}" data-key="name" bindinput="onCreateInput" />
+      </view>
+      <view class="field">
+        <text class="field-label">默认每次消耗课时</text>
+        <input class="input" type="digit" placeholder="如：1" value="{{createForm.unit}}" data-key="unit" bindinput="onCreateInput" />
+      </view>
+      <view class="form-actions">
+        <button class="primary-button" bindtap="createCourse">保存课程</button>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{editingCourseId}}" class="section" id="course-edit-form">
+    <view class="section-title">编辑课程</view>
+    <view class="card form-card edit-card">
+      <view class="field">
+        <text class="field-label">课程名称</text>
+        <input class="input" value="{{editForm.name}}" data-key="name" bindinput="onEditInput" />
+      </view>
+      <view class="field">
+        <text class="field-label">默认每次消耗课时</text>
+        <input class="input" type="digit" value="{{editForm.unit}}" data-key="unit" bindinput="onEditInput" />
+      </view>
+      <view class="form-actions">
+        <button class="primary-button" bindtap="updateCourse">保存修改</button>
+        <button class="ghost-button" bindtap="cancelEdit">取消编辑</button>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">课程列表</view>
+    <view wx:if="{{loading}}" class="card empty">正在加载课程...</view>
+    <block wx:elif="{{courses.length}}">
+      <view class="course card" wx:for="{{courses}}" wx:key="id">
+        <view class="course-main">
+          <view>
+            <view class="course-name">{{item.name}}</view>
+            <view class="course-meta">默认每次消耗 {{item.unit}} 课时</view>
+          </view>
+        </view>
+        <view class="course-actions">
+          <view class="list-button list-button-ghost" data-id="{{item.id}}" bindtap="startEdit">编辑</view>
+          <view class="list-button list-button-danger" data-id="{{item.id}}" bindtap="deleteCourse">删除</view>
+        </view>
+      </view>
+    </block>
+    <view wx:else class="card empty">暂无课程，先添加一个课程</view>
+  </view>
+</view>

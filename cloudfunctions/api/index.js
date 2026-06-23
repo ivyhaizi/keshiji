@@ -35,6 +35,22 @@ function formatDate(date = new Date()) {
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
+function getCheckinTimeText(payload) {
+  const classDate = String(payload.classDate || "").trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(classDate)) {
+    return `${classDate} 00:00`;
+  }
+  return formatDate();
+}
+
+function getCheckinTargetDateText(payload) {
+  const classDate = String(payload.classDate || "").trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(classDate)) {
+    return classDate;
+  }
+  return formatDate().slice(0, 10);
+}
+
 function publicId(prefix) {
   return `${prefix}_${Date.now()}_${Math.floor(Math.random() * 100000)}`;
 }
@@ -59,6 +75,24 @@ async function ensureCollections() {
 async function first(collection, where) {
   const result = await db.collection(collection).where(where).limit(1).get();
   return result.data[0] || null;
+}
+
+async function findActiveCourseByName(orgId, name, excludeId = "") {
+  const result = await db
+    .collection(COLLECTIONS.courses)
+    .where({ orgId, name })
+    .limit(20)
+    .get();
+  return result.data.find((course) => course.status !== "deleted" && course._id !== excludeId) || null;
+}
+
+async function findActiveStudentByNameAndCourse(orgId, name, courseId, excludeId = "") {
+  const result = await db
+    .collection(COLLECTIONS.students)
+    .where({ orgId, name, courseId })
+    .limit(20)
+    .get();
+  return result.data.find((student) => student.status !== "deleted" && student._id !== excludeId) || null;
 }
 
 async function ensureUser(openid) {
@@ -236,14 +270,16 @@ function assertCanCheckin(role) {
 async function listCourses(orgId) {
   const result = await db
     .collection(COLLECTIONS.courses)
-    .where({ orgId, status: "enabled" })
+    .where({ orgId })
     .orderBy("createdAt", "asc")
     .get();
-  return result.data.map((course) => ({
-    id: course._id,
-    name: course.name,
-    unit: course.unit
-  }));
+  return result.data
+    .filter((course) => course.status !== "deleted")
+    .map((course) => ({
+      id: course._id,
+      name: course.name,
+      unit: course.unit
+    }));
 }
 
 async function listStudents(orgId) {
@@ -278,6 +314,8 @@ async function listRecords(orgId) {
     hours: Math.abs(Number(record.hours || record.deltaHours || 0)),
     type: record.type,
     note: record.note || "",
+    targetDateText: record.targetDateText || (record.type === "checkin" ? String(record.createdAtText || "").slice(0, 10) : ""),
+    operatedAtText: record.operatedAtText || record.createdAtText || "",
     createdAt: record.createdAtText || ""
   }));
 }
@@ -325,6 +363,101 @@ async function studentList() {
   return ok({ students, courses });
 }
 
+async function courseList() {
+  const context = await getContext();
+  const courses = await listCourses(context.orgId);
+  return ok({ courses });
+}
+
+async function courseCreate(payload) {
+  const context = await getContext();
+  assertCanManage(context.role);
+
+  const name = String(payload.name || "").trim();
+  const unit = Number(payload.unit || 0);
+  if (!name) return fail("请填写课程名称");
+  if (unit <= 0) return fail("默认课时必须大于 0");
+  if (await findActiveCourseByName(context.orgId, name)) {
+    return fail("课程名称已存在");
+  }
+
+  const result = await db.collection(COLLECTIONS.courses).add({
+    data: {
+      publicId: publicId("course"),
+      orgId: context.orgId,
+      name,
+      unit,
+      status: "enabled",
+      createdAt: now(),
+      updatedAt: now()
+    }
+  });
+
+  return ok({ id: result._id });
+}
+
+async function courseUpdate(payload) {
+  const context = await getContext();
+  assertCanManage(context.role);
+
+  const course = await first(COLLECTIONS.courses, {
+    _id: payload.courseId,
+    orgId: context.orgId
+  });
+  if (!course || course.status === "deleted") return fail("课程不存在");
+
+  const name = String(payload.name || "").trim();
+  const unit = Number(payload.unit || 0);
+  if (!name) return fail("请填写课程名称");
+  if (unit <= 0) return fail("默认课时必须大于 0");
+  if (await findActiveCourseByName(context.orgId, name, course._id)) {
+    return fail("课程名称已存在");
+  }
+
+  await db.collection(COLLECTIONS.courses).doc(course._id).update({
+    data: {
+      name,
+      unit,
+      updatedAt: now()
+    }
+  });
+
+  return ok({});
+}
+
+async function courseDelete(payload) {
+  const context = await getContext();
+  assertCanManage(context.role);
+
+  const course = await first(COLLECTIONS.courses, {
+    _id: payload.courseId,
+    orgId: context.orgId
+  });
+  if (!course || course.status === "deleted") return fail("课程不存在");
+
+  const usedCount = await db
+    .collection(COLLECTIONS.students)
+    .where({
+      orgId: context.orgId,
+      courseId: course._id,
+      status: _.neq("deleted")
+    })
+    .count();
+  if (usedCount.total > 0) {
+    return fail("已有学员使用该课程，不能删除");
+  }
+
+  await db.collection(COLLECTIONS.courses).doc(course._id).update({
+    data: {
+      status: "deleted",
+      deletedAt: now(),
+      updatedAt: now()
+    }
+  });
+
+  return ok({});
+}
+
 async function studentCreate(payload) {
   const context = await getContext();
   assertCanManage(context.role);
@@ -337,6 +470,9 @@ async function studentCreate(payload) {
     orgId: context.orgId
   });
   if (!course) return fail("课程不存在");
+  if (await findActiveStudentByNameAndCourse(context.orgId, name, course._id)) {
+    return fail("该课程下已存在同名学员");
+  }
 
   const result = await db.collection(COLLECTIONS.students).add({
     data: {
@@ -356,6 +492,63 @@ async function studentCreate(payload) {
   return ok({ id: result._id });
 }
 
+async function studentUpdate(payload) {
+  const context = await getContext();
+  assertCanManage(context.role);
+
+  const student = await first(COLLECTIONS.students, {
+    _id: payload.studentId,
+    orgId: context.orgId
+  });
+  if (!student || student.status === "deleted") return fail("学员不存在");
+
+  const name = String(payload.name || "").trim();
+  if (!name) return fail("请填写学员姓名");
+
+  const course = await first(COLLECTIONS.courses, {
+    _id: payload.courseId,
+    orgId: context.orgId
+  });
+  if (!course) return fail("课程不存在");
+  if (await findActiveStudentByNameAndCourse(context.orgId, name, course._id, student._id)) {
+    return fail("该课程下已存在同名学员");
+  }
+
+  await db.collection(COLLECTIONS.students).doc(student._id).update({
+    data: {
+      name,
+      guardian: payload.guardian || "",
+      phone: payload.phone || "",
+      courseId: course._id,
+      remaining: Number(payload.remaining || 0),
+      updatedAt: now()
+    }
+  });
+
+  return ok({});
+}
+
+async function studentDelete(payload) {
+  const context = await getContext();
+  assertCanManage(context.role);
+
+  const student = await first(COLLECTIONS.students, {
+    _id: payload.studentId,
+    orgId: context.orgId
+  });
+  if (!student || student.status === "deleted") return fail("学员不存在");
+
+  await db.collection(COLLECTIONS.students).doc(student._id).update({
+    data: {
+      status: "deleted",
+      deletedAt: now(),
+      updatedAt: now()
+    }
+  });
+
+  return ok({});
+}
+
 async function studentRecharge(payload) {
   const context = await getContext();
   assertCanManage(context.role);
@@ -367,7 +560,7 @@ async function studentRecharge(payload) {
     _id: payload.studentId,
     orgId: context.orgId
   });
-  if (!student) return fail("学员不存在");
+  if (!student || student.status === "deleted") return fail("学员不存在");
 
   const balanceAfter = Number((Number(student.remaining || 0) + hours).toFixed(2));
   await db.collection(COLLECTIONS.students).doc(student._id).update({
@@ -410,7 +603,7 @@ async function lessonCheckin(payload) {
     _id: payload.studentId,
     orgId: context.orgId
   });
-  if (!student) return fail("学员不存在");
+  if (!student || student.status === "deleted") return fail("学员不存在");
 
   const course = await first(COLLECTIONS.courses, {
     _id: payload.courseId,
@@ -443,7 +636,9 @@ async function lessonCheckin(payload) {
       type: "checkin",
       note: payload.note || "上课打卡",
       operatorId: context.user._id,
-      createdAtText: formatDate(),
+      targetDateText: getCheckinTargetDateText(payload),
+      operatedAtText: formatDate(),
+      createdAtText: getCheckinTimeText(payload),
       createdAt: now()
     }
   });
@@ -503,6 +698,10 @@ exports.main = async (event) => {
     const payload = event.payload || {};
 
     const handlers = {
+      courseCreate,
+      courseDelete,
+      courseList,
+      courseUpdate,
       dashboard,
       lessonCheckin,
       login,
@@ -510,8 +709,10 @@ exports.main = async (event) => {
       recordList,
       resetDemoData,
       studentCreate,
+      studentDelete,
       studentList,
-      studentRecharge
+      studentRecharge,
+      studentUpdate
     };
 
     if (!handlers[action]) {

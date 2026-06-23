@@ -1,0 +1,77 @@
+.form-card {
+  padding: 24rpx;
+}
+
+.edit-card {
+  border-color: #9ec5ff;
+  background: #f8fbff;
+}
+
+.form-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16rpx;
+}
+
+.course {
+  margin-bottom: 18rpx;
+  padding: 24rpx;
+}
+
+.course-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.course-name {
+  color: #111827;
+  font-size: 32rpx;
+  font-weight: 800;
+}
+
+.course-meta {
+  margin-top: 8rpx;
+  color: #667085;
+  font-size: 24rpx;
+}
+
+.course-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 12rpx;
+  margin-top: 18rpx;
+}
+
+.list-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 132rpx;
+  min-width: 0;
+  height: 58rpx;
+  margin: 0;
+  padding: 0;
+  border-radius: 10rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.list-button::after {
+  border: 0;
+}
+
+.list-button-ghost {
+  border: 1rpx solid #cbd5e1;
+  background: #ffffff;
+  color: #1f2937;
+}
+
+.list-button-danger {
+  background: #fff1f2;
+  color: #e11d48;
+}

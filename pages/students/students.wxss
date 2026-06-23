@@ -17,6 +17,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20rpx;
 }
 
 .student-name {
@@ -32,23 +33,143 @@
 }
 
 .student-hours {
-  min-width: 104rpx;
+  min-width: 116rpx;
+  text-align: right;
+}
+
+.student-hours-value {
   color: #1677ff;
   font-size: 42rpx;
   font-weight: 800;
-  text-align: right;
+}
+
+.student-hours-label {
+  margin-top: 4rpx;
+  color: #667085;
+  font-size: 22rpx;
 }
 
 .student-actions {
   display: flex;
-  justify-content: flex-end;
-  margin-top: 20rpx;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 12rpx;
+  margin-top: 18rpx;
 }
 
-.small-button {
-  width: 220rpx;
+.student-actions picker {
+  width: 132rpx;
+}
+
+.list-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 132rpx;
+  min-width: 0;
+  height: 58rpx;
+  margin: 0;
+  padding: 0;
+  border-radius: 10rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.list-button::after {
+  border: 0;
+}
+
+.list-button-ghost {
+  border: 1rpx solid #cbd5e1;
+  background: #ffffff;
+  color: #1f2937;
+}
+
+.list-button-primary {
+  background: #1677ff;
+  color: #ffffff;
+}
+
+.list-button-danger {
+  background: #fff1f2;
+  color: #e11d48;
+}
+
+.picker-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16rpx;
+}
+
+.dialog-mask {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 36rpx;
+  background: rgba(15, 23, 42, 0.42);
+}
+
+.dialog {
+  width: 600rpx;
+  max-width: 100%;
+  padding: 28rpx;
+}
+
+.dialog-title {
+  color: #111827;
+  font-size: 34rpx;
+  font-weight: 800;
+}
+
+.dialog-subtitle {
+  margin: 8rpx 0 24rpx;
+  color: #667085;
+  font-size: 26rpx;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16rpx;
+}
+
+.dialog-button {
+  box-sizing: border-box;
+  width: 148rpx;
+  min-width: 0;
   height: 64rpx;
   margin: 0;
-  font-size: 24rpx;
+  padding: 0;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  font-weight: 700;
   line-height: 64rpx;
+}
+
+.dialog-button::after {
+  border: 0;
+}
+
+.dialog-button-ghost {
+  border: 1rpx solid #cbd5e1;
+  background: #ffffff;
+  color: #1f2937;
+}
+
+.dialog-button-primary {
+  background: #1677ff;
+  color: #ffffff;
 }
