@@ -390,6 +390,12 @@ async function listCourses(orgId) {
     }));
 }
 
+function filterCoursesForContext(courses, students, context) {
+  if (context.role !== ROLES.parent) return courses;
+  const visibleCourseIds = new Set(students.map((student) => student.courseId).filter(Boolean));
+  return courses.filter((course) => visibleCourseIds.has(course.id));
+}
+
 async function listStudents(orgId, context) {
   const result = await db
     .collection(COLLECTIONS.students)
@@ -519,7 +525,7 @@ async function studentList() {
     return ok(decorateUnbound({ students: [], courses: [] }));
   }
   const [students, courses] = await Promise.all([listStudents(context.orgId, context), listCourses(context.orgId)]);
-  return ok(decorateContext({ students, courses }, context));
+  return ok(decorateContext({ students, courses: filterCoursesForContext(courses, students, context) }, context));
 }
 
 async function courseList() {
@@ -527,8 +533,8 @@ async function courseList() {
   if (!context.membership) {
     return ok(decorateUnbound({ courses: [] }));
   }
-  const courses = await listCourses(context.orgId);
-  return ok(decorateContext({ courses }, context));
+  const [students, courses] = await Promise.all([listStudents(context.orgId, context), listCourses(context.orgId)]);
+  return ok(decorateContext({ courses: filterCoursesForContext(courses, students, context) }, context));
 }
 
 async function courseCreate(payload) {
@@ -972,6 +978,7 @@ async function profileGet() {
           id: context.membership._id,
           displayName: context.membership.displayName || getRoleName(context.role)
         },
+        boundStudents: context.role === ROLES.parent ? students : [],
         totals: {
           studentCount: students.length,
           recordCount: records.length

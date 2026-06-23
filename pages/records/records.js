@@ -51,6 +51,7 @@ Page({
         permissions: data.permissions || this.data.permissions,
         records: (data.records || []).map((record) => ({
           ...record,
+          typeText: this.getRecordTypeText(record.type),
           status: record.status || "active",
           canUndo:
             record.canUndo !== undefined
@@ -81,6 +82,16 @@ Page({
     } catch (error) {
       this.setData({ logs: [] });
     }
+  },
+
+  getRecordTypeText(type) {
+    const typeMap = {
+      checkin: "打卡",
+      recharge: "充值",
+      undo_checkin: "撤销打卡",
+      undo_recharge: "撤销充值"
+    };
+    return typeMap[type] || "记录";
   },
 
   getRecordStatusText(record) {

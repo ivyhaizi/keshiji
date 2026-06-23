@@ -28,6 +28,7 @@ Page({
       membership: {
         displayName: "未绑定"
       },
+      boundStudents: [],
       permissions: {},
       unbound: true
     },
@@ -81,15 +82,23 @@ Page({
   async loadStudents() {
     const data = await store.getStudents();
     const students = data.students || [];
+    const courseMap = (data.courses || []).reduce((map, course) => {
+      map[course.id] = course.name;
+      return map;
+    }, {});
+    const decoratedStudents = students.map((student) => ({
+      ...student,
+      displayName: `${student.name} - ${courseMap[student.courseId] || "未设置课程"}`
+    }));
     this.setData({
-      students,
-      studentNames: students.map((student) => student.name)
+      students: decoratedStudents,
+      studentNames: decoratedStudents.map((student) => student.displayName)
     });
   },
 
   getBoundStudentNames(studentIds) {
     const studentMap = this.data.students.reduce((map, student) => {
-      map[student.id] = student.name;
+      map[student.id] = student.displayName || student.name;
       return map;
     }, {});
     return studentIds.map((id) => studentMap[id]).filter(Boolean).join("、");

@@ -28,6 +28,17 @@
     </view>
   </view>
 
+  <view wx:if="{{profile.role === 'parent'}}" class="section">
+    <view class="section-title">家长绑定学员</view>
+    <block wx:if="{{profile.boundStudents.length}}">
+      <view class="member card" wx:for="{{profile.boundStudents}}" wx:key="id">
+        <view class="member-name">{{item.name}}</view>
+        <view class="member-meta">{{item.guardian || '家长'}} · 剩余 {{item.remaining}} 课时</view>
+      </view>
+    </block>
+    <view wx:else class="card empty">暂无绑定学员，请联系机构管理员绑定。</view>
+  </view>
+
   <view wx:if="{{profile.permissions.canManageMembers}}" class="section">
     <view class="section-title">成员管理</view>
     <view class="card member-form">

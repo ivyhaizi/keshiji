@@ -32,7 +32,7 @@
   </view>
 
   <view class="section">
-    <view class="section-title">学员课程列表</view>
+    <view class="section-title">{{permissions.canRecharge || permissions.canCheckin || permissions.canManageStudents ? '学员课程列表' : '我的孩子'}}</view>
     <block wx:if="{{students.length}}">
       <view class="student card" wx:for="{{students}}" wx:key="id">
         <view class="student-main">

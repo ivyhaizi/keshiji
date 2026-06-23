@@ -23,6 +23,7 @@
           <view>
             <view class="record-title-row">
               <view class="record-title">{{item.studentName}}</view>
+              <view class="record-badge {{item.status === 'undone' ? 'record-badge-muted' : ''}}">{{item.typeText}}</view>
               <view class="record-badge {{item.status === 'undone' ? 'record-badge-muted' : ''}}">{{item.statusText}}</view>
             </view>
             <view class="record-subtitle">{{item.courseName}} · {{item.note}} {{item.status === 'undone' ? '· 已撤销' : ''}}</view>
