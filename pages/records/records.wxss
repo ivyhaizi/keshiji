@@ -3,6 +3,36 @@
   padding: 24rpx;
 }
 
+.filter-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16rpx;
+  padding: 24rpx;
+}
+
+.filter-field {
+  box-sizing: border-box;
+  min-height: 72rpx;
+  padding: 18rpx 22rpx;
+  border: 1rpx solid #d7deea;
+  border-radius: 12rpx;
+  background: #ffffff;
+  color: #111827;
+  font-size: 26rpx;
+}
+
+.filter-reset {
+  width: 160rpx;
+  height: 58rpx;
+  border: 1rpx solid #cbd5e1;
+  border-radius: 10rpx;
+  color: #1f2937;
+  font-size: 24rpx;
+  font-weight: 700;
+  line-height: 58rpx;
+  text-align: center;
+}
+
 .record-main {
   display: flex;
   align-items: center;
@@ -13,6 +43,31 @@
   color: #111827;
   font-size: 32rpx;
   font-weight: 800;
+}
+
+.record-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  flex-wrap: wrap;
+}
+
+.record-badge {
+  min-width: 88rpx;
+  height: 40rpx;
+  padding: 0 12rpx;
+  border-radius: 999rpx;
+  background: #e8f2ff;
+  color: #1677ff;
+  font-size: 22rpx;
+  font-weight: 700;
+  line-height: 40rpx;
+  text-align: center;
+}
+
+.record-badge-muted {
+  background: #f1f5f9;
+  color: #64748b;
 }
 
 .record-subtitle,
@@ -29,6 +84,12 @@
   padding-top: 8rpx;
 }
 
+.record-status {
+  margin-top: 10rpx;
+  color: #e11d48;
+  font-size: 24rpx;
+}
+
 .record-hours {
   color: #e11d48;
   font-size: 36rpx;
@@ -37,4 +98,51 @@
 
 .record-hours.plus {
   color: #16a34a;
+}
+
+.record-actions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 18rpx;
+}
+
+.record-button {
+  width: 132rpx;
+  height: 58rpx;
+  border-radius: 10rpx;
+  background: #fff1f2;
+  color: #e11d48;
+  font-size: 24rpx;
+  font-weight: 700;
+  line-height: 58rpx;
+  text-align: center;
+}
+
+.log {
+  margin-bottom: 18rpx;
+  padding: 22rpx 24rpx;
+}
+
+.log-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18rpx;
+}
+
+.log-title {
+  color: #111827;
+  font-size: 28rpx;
+  font-weight: 800;
+}
+
+.log-time,
+.log-detail {
+  color: #667085;
+  font-size: 24rpx;
+}
+
+.log-detail {
+  margin-top: 8rpx;
+  word-break: break-all;
 }

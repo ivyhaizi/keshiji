@@ -73,8 +73,16 @@ function checkIn(studentId, courseId, hours, note, classDate) {
   return callApi("lessonCheckin", { studentId, courseId, hours, note, classDate });
 }
 
-function getRecords() {
-  return callApi("recordList");
+function getRecords(filters = {}) {
+  return callApi("recordList", filters);
+}
+
+function undoRecord(recordId) {
+  return callApi("recordUndo", { recordId });
+}
+
+function getOperationLogs() {
+  return callApi("operationLogList");
 }
 
 function getProfile() {
@@ -94,6 +102,7 @@ module.exports = {
   getCourses,
   getDashboard,
   getProfile,
+  getOperationLogs,
   getRecords,
   getStudents,
   login,
@@ -101,5 +110,6 @@ module.exports = {
   resetDemoData,
   showError,
   updateCourse,
-  updateStudent
+  updateStudent,
+  undoRecord
 };

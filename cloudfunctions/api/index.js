@@ -13,7 +13,8 @@ const COLLECTIONS = {
   memberships: "memberships",
   courses: "courses",
   students: "students",
-  lessonRecords: "lesson_records"
+  lessonRecords: "lesson_records",
+  operationLogs: "operation_logs"
 };
 
 const DEFAULT_ORG_NAME = "课时小伙伴演示机构";
@@ -75,6 +76,21 @@ async function ensureCollections() {
 async function first(collection, where) {
   const result = await db.collection(collection).where(where).limit(1).get();
   return result.data[0] || null;
+}
+
+async function addOperationLog(context, action, targetType, targetId, detail = {}) {
+  await db.collection(COLLECTIONS.operationLogs).add({
+    data: {
+      orgId: context.orgId,
+      operatorId: context.user._id,
+      action,
+      targetType,
+      targetId,
+      detail,
+      operatedAtText: formatDate(),
+      createdAt: now()
+    }
+  });
 }
 
 async function findActiveCourseByName(orgId, name, excludeId = "") {
@@ -299,25 +315,42 @@ async function listStudents(orgId) {
   }));
 }
 
-async function listRecords(orgId) {
+async function listRecords(orgId, filters = {}) {
   const result = await db
     .collection(COLLECTIONS.lessonRecords)
     .where({ orgId })
     .orderBy("createdAt", "desc")
     .limit(100)
     .get();
-  return result.data.map((record) => ({
-    id: record._id,
-    studentId: record.studentId,
-    studentName: record.studentName,
-    courseName: record.courseName,
-    hours: Math.abs(Number(record.hours || record.deltaHours || 0)),
-    type: record.type,
-    note: record.note || "",
-    targetDateText: record.targetDateText || (record.type === "checkin" ? String(record.createdAtText || "").slice(0, 10) : ""),
-    operatedAtText: record.operatedAtText || record.createdAtText || "",
-    createdAt: record.createdAtText || ""
-  }));
+  return result.data
+    .map((record) => {
+      const targetDateText = record.targetDateText || (record.type === "checkin" ? String(record.createdAtText || "").slice(0, 10) : "");
+      const operatedAtText = record.operatedAtText || record.createdAtText || "";
+      const recordDate = record.type === "checkin" ? targetDateText : String(operatedAtText).slice(0, 10);
+      const deltaHours = Number(record.deltaHours || 0);
+      const direction = deltaHours >= 0 ? "plus" : "minus";
+      return {
+        id: record._id,
+        studentId: record.studentId,
+        studentName: record.studentName,
+        courseId: record.courseId || "",
+        courseName: record.courseName,
+        hours: Math.abs(Number(record.hours || deltaHours || 0)),
+        direction,
+        type: record.type,
+        note: record.note || "",
+        status: record.status || "active",
+        canUndo: ["checkin", "recharge"].includes(record.type) && record.status !== "undone",
+        targetDateText,
+        operatedAtText,
+        undoneAtText: record.undoneAtText || "",
+        createdAt: record.createdAtText || "",
+        recordDate
+      };
+    })
+    .filter((record) => !filters.studentId || record.studentId === filters.studentId)
+    .filter((record) => !filters.courseId || record.courseId === filters.courseId)
+    .filter((record) => !filters.date || record.recordDate === filters.date);
 }
 
 async function login() {
@@ -570,7 +603,7 @@ async function studentRecharge(payload) {
     }
   });
 
-  await db.collection(COLLECTIONS.lessonRecords).add({
+  const recordResult = await db.collection(COLLECTIONS.lessonRecords).add({
     data: {
       publicId: publicId("rec"),
       orgId: context.orgId,
@@ -582,11 +615,18 @@ async function studentRecharge(payload) {
       deltaHours: hours,
       balanceAfter,
       type: "recharge",
+      status: "active",
       note: "手动充值",
       operatorId: context.user._id,
+      operatedAtText: formatDate(),
       createdAtText: formatDate(),
       createdAt: now()
     }
+  });
+  await addOperationLog(context, "student_recharge", "lesson_record", recordResult._id, {
+    studentId: student._id,
+    hours,
+    balanceAfter
   });
 
   return ok({ balanceAfter });
@@ -634,6 +674,7 @@ async function lessonCheckin(payload) {
       deltaHours: -hours,
       balanceAfter,
       type: "checkin",
+      status: "active",
       note: payload.note || "上课打卡",
       operatorId: context.user._id,
       targetDateText: getCheckinTargetDateText(payload),
@@ -642,14 +683,115 @@ async function lessonCheckin(payload) {
       createdAt: now()
     }
   });
+  await addOperationLog(context, "lesson_checkin", "lesson_record", recordResult._id, {
+    studentId: student._id,
+    courseId: course._id,
+    hours,
+    balanceAfter,
+    targetDateText: getCheckinTargetDateText(payload)
+  });
 
   return ok({ id: recordResult._id, balanceAfter });
 }
 
-async function recordList() {
+async function recordList(payload = {}) {
   const context = await getContext();
-  const records = await listRecords(context.orgId);
+  const records = await listRecords(context.orgId, payload);
   return ok({ records });
+}
+
+async function recordUndo(payload) {
+  const context = await getContext();
+  assertCanManage(context.role);
+
+  const record = await first(COLLECTIONS.lessonRecords, {
+    _id: payload.recordId,
+    orgId: context.orgId
+  });
+  if (!record) return fail("课时记录不存在");
+  if (!["checkin", "recharge"].includes(record.type)) return fail("该记录不支持撤销");
+  if (record.status === "undone") return fail("该记录已撤销");
+
+  const student = await first(COLLECTIONS.students, {
+    _id: record.studentId,
+    orgId: context.orgId
+  });
+  if (!student || student.status === "deleted") return fail("学员不存在");
+
+  const hours = Math.abs(Number(record.hours || record.deltaHours || 0));
+  const currentRemaining = Number(student.remaining || 0);
+  const isRecharge = record.type === "recharge";
+  const balanceAfter = Number((isRecharge ? currentRemaining - hours : currentRemaining + hours).toFixed(2));
+  if (balanceAfter < 0) return fail("撤销后课时不能小于 0");
+
+  await db.collection(COLLECTIONS.students).doc(student._id).update({
+    data: {
+      remaining: balanceAfter,
+      updatedAt: now()
+    }
+  });
+
+  await db.collection(COLLECTIONS.lessonRecords).doc(record._id).update({
+    data: {
+      status: "undone",
+      undoneAtText: formatDate(),
+      undoneBy: context.user._id,
+      updatedAt: now()
+    }
+  });
+
+  const undoType = isRecharge ? "undo_recharge" : "undo_checkin";
+  const undoRecordResult = await db.collection(COLLECTIONS.lessonRecords).add({
+    data: {
+      publicId: publicId("rec"),
+      orgId: context.orgId,
+      studentId: student._id,
+      studentName: record.studentName || student.name,
+      courseId: record.courseId || "",
+      courseName: record.courseName || (isRecharge ? "撤销充值" : "撤销打卡"),
+      hours,
+      deltaHours: isRecharge ? -hours : hours,
+      balanceAfter,
+      type: undoType,
+      status: "active",
+      note: isRecharge ? "撤销充值" : "撤销打卡",
+      originalRecordId: record._id,
+      operatorId: context.user._id,
+      targetDateText: record.targetDateText || "",
+      operatedAtText: formatDate(),
+      createdAtText: formatDate(),
+      createdAt: now()
+    }
+  });
+
+  await addOperationLog(context, "lesson_record_undo", "lesson_record", record._id, {
+    undoRecordId: undoRecordResult._id,
+    originalType: record.type,
+    studentId: student._id,
+    hours,
+    balanceAfter
+  });
+
+  return ok({ balanceAfter });
+}
+
+async function operationLogList() {
+  const context = await getContext();
+  const result = await db
+    .collection(COLLECTIONS.operationLogs)
+    .where({ orgId: context.orgId })
+    .orderBy("createdAt", "desc")
+    .limit(30)
+    .get();
+  const logs = result.data.map((log) => ({
+    id: log._id,
+    action: log.action,
+    targetType: log.targetType,
+    targetId: log.targetId,
+    operatedAtText: log.operatedAtText || "",
+    detail: log.detail || {}
+  }));
+  return ok({ logs });
 }
 
 async function profileGet() {
@@ -705,8 +847,10 @@ exports.main = async (event) => {
       dashboard,
       lessonCheckin,
       login,
+      operationLogList,
       profileGet,
       recordList,
+      recordUndo,
       resetDemoData,
       studentCreate,
       studentDelete,

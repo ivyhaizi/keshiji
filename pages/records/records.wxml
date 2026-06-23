@@ -1,15 +1,34 @@
 <view class="page">
   <view class="section">
+    <view class="section-title">筛选</view>
+    <view class="card filter-card">
+      <picker range="{{studentNames}}" value="{{studentIndex}}" bindchange="onStudentFilterChange">
+        <view class="filter-field">{{studentNames[studentIndex]}}</view>
+      </picker>
+      <picker range="{{courseNames}}" value="{{courseIndex}}" bindchange="onCourseFilterChange">
+        <view class="filter-field">{{courseNames[courseIndex]}}</view>
+      </picker>
+      <picker mode="date" value="{{filterDate}}" bindchange="onDateFilterChange">
+        <view class="filter-field">{{filterDate || '全部日期'}}</view>
+      </picker>
+      <view class="filter-reset" bindtap="clearFilters">清除筛选</view>
+    </view>
+  </view>
+
+  <view class="section">
     <view class="section-title">课时流水</view>
     <block wx:if="{{records.length}}">
       <view class="record card" wx:for="{{records}}" wx:key="id">
         <view class="record-main">
           <view>
-            <view class="record-title">{{item.studentName}}</view>
-            <view class="record-subtitle">{{item.courseName}} · {{item.note}}</view>
+            <view class="record-title-row">
+              <view class="record-title">{{item.studentName}}</view>
+              <view class="record-badge {{item.status === 'undone' ? 'record-badge-muted' : ''}}">{{item.statusText}}</view>
+            </view>
+            <view class="record-subtitle">{{item.courseName}} · {{item.note}} {{item.status === 'undone' ? '· 已撤销' : ''}}</view>
           </view>
-          <view class="record-hours {{item.type === 'recharge' ? 'plus' : ''}}">
-            {{item.type === 'recharge' ? '+' : '-'}}{{item.hours}}
+          <view class="record-hours {{item.direction === 'plus' ? 'plus' : ''}}">
+            {{item.direction === 'plus' ? '+' : '-'}}{{item.hours}}
           </view>
         </view>
         <view wx:if="{{item.type === 'checkin'}}" class="record-detail">
@@ -17,8 +36,26 @@
           <view>打卡实施日：{{item.operatedAtText || '-'}}</view>
         </view>
         <view wx:else class="record-time">操作时间：{{item.operatedAtText || item.createdAt}}</view>
+        <view wx:if="{{item.status === 'undone'}}" class="record-status">撤销时间：{{item.undoneAtText || '-'}}</view>
+        <view wx:if="{{item.canUndo}}" class="record-actions">
+          <view class="record-button" data-id="{{item.id}}" bindtap="undoRecord">撤销</view>
+        </view>
       </view>
     </block>
     <view wx:else class="card empty">暂无记录</view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">操作日志</view>
+    <block wx:if="{{logs.length}}">
+      <view class="log card" wx:for="{{logs}}" wx:key="id">
+        <view class="log-main">
+          <view class="log-title">{{item.actionText}}</view>
+          <view class="log-time">{{item.operatedAtText}}</view>
+        </view>
+        <view class="log-detail">目标：{{item.targetType}} / {{item.targetId}}</view>
+      </view>
+    </block>
+    <view wx:else class="card empty">暂无操作日志</view>
   </view>
 </view>
