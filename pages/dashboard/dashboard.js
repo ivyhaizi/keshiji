@@ -3,7 +3,8 @@ const store = require("../../utils/cloudStore");
 Page({
   data: {
     stats: {},
-    recentRecords: []
+    recentRecords: [],
+    permissions: {}
   },
 
   async onShow() {
@@ -11,7 +12,8 @@ Page({
       const data = await store.getDashboard();
       this.setData({
         stats: data.stats,
-        recentRecords: data.recentRecords
+        recentRecords: data.recentRecords,
+        permissions: data.permissions || {}
       });
     } catch (error) {
       store.showError(error);

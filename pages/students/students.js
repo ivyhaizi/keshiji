@@ -13,6 +13,7 @@ Page({
     courseNames: [],
     courseIndex: 0,
     students: [],
+    permissions: {},
     editingStudentId: "",
     form: { ...emptyForm },
     rechargeDialog: {
@@ -31,14 +32,15 @@ Page({
   async loadData() {
     try {
       const data = await store.getStudents();
-      const courseMap = data.courses.reduce((map, course) => {
+      const courseMap = (data.courses || []).reduce((map, course) => {
         map[course.id] = course;
         return map;
       }, {});
       this.setData({
-        courses: data.courses,
-        courseNames: data.courses.map((course) => course.name),
-        students: data.students.map((student) => ({
+        courses: data.courses || [],
+        courseNames: (data.courses || []).map((course) => course.name),
+        permissions: data.permissions || {},
+        students: (data.students || []).map((student) => ({
           ...student,
           courseName: courseMap[student.courseId] ? courseMap[student.courseId].name : "未设置课程",
           courseUnit: courseMap[student.courseId] ? Number(courseMap[student.courseId].unit || 1) : 1
@@ -98,25 +100,28 @@ Page({
     const student = this.data.students.find((item) => item.id === id);
     if (!student) return;
     const courseIndex = Math.max(this.data.courses.findIndex((course) => course.id === student.courseId), 0);
-    this.setData({
-      editingStudentId: id,
-      courseIndex,
-      form: {
-        name: student.name,
-        guardian: student.guardian,
-        phone: student.phone,
-        remaining: String(student.remaining)
+    this.setData(
+      {
+        editingStudentId: id,
+        courseIndex,
+        form: {
+          name: student.name,
+          guardian: student.guardian,
+          phone: student.phone,
+          remaining: String(student.remaining)
+        }
+      },
+      () => {
+        wx.pageScrollTo({
+          selector: "#student-form",
+          duration: 250
+        });
+        wx.showToast({
+          title: "已进入编辑",
+          icon: "none"
+        });
       }
-    }, () => {
-      wx.pageScrollTo({
-        selector: "#student-form",
-        duration: 250
-      });
-      wx.showToast({
-        title: "已进入编辑",
-        icon: "none"
-      });
-    });
+    );
   },
 
   cancelEdit() {
@@ -170,7 +175,7 @@ Page({
             student.id,
             student.courseId,
             hours,
-            options.note || "当日打卡",
+            options.note || "上课打卡",
             options.classDate || ""
           );
           await this.loadData();
@@ -245,7 +250,7 @@ Page({
     }
     wx.showModal({
       title: "确认充课时",
-      content: `${dialog.studentName} · ${dialog.courseName}\n将充值 ${hours} 课时`,
+      content: `${dialog.studentName} · ${dialog.courseName}\n将增加 ${hours} 课时`,
       success: async (res) => {
         if (!res.confirm) return;
         try {

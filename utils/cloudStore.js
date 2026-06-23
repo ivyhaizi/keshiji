@@ -10,7 +10,7 @@ function callApi(action, payload = {}) {
     .then((res) => {
       const result = res.result || {};
       if (!result.ok) {
-        throw new Error(result.message || "云函数调用失败");
+        throw new Error(result.message || "云端数据调用失败");
       }
       return result.data;
     });
@@ -36,9 +36,7 @@ function getStudents() {
 }
 
 function getCourses() {
-  return callApi("studentList").then((data) => ({
-    courses: data.courses || []
-  }));
+  return callApi("courseList");
 }
 
 function addStudent(student) {
@@ -89,27 +87,62 @@ function getProfile() {
   return callApi("profileGet");
 }
 
+function getMembers() {
+  return callApi("memberList");
+}
+
+function addMember(member) {
+  return callApi("memberCreate", member);
+}
+
+function updateMember(memberId, member) {
+  return callApi("memberUpdate", { memberId, ...member });
+}
+
+function deleteMember(memberId) {
+  return callApi("memberDelete", { memberId });
+}
+
+function bindMember(inviteCode) {
+  return callApi("memberBind", { inviteCode });
+}
+
+function createOrg(orgName) {
+  return callApi("orgCreate", { orgName });
+}
+
+function submitFeedback(feedback) {
+  return callApi("feedbackCreate", feedback);
+}
+
 function resetDemoData() {
   return callApi("resetDemoData");
 }
 
 module.exports = {
   addCourse,
+  addMember,
   addStudent,
+  bindMember,
   checkIn,
+  createOrg,
   deleteCourse,
+  deleteMember,
   deleteStudent,
   getCourses,
   getDashboard,
-  getProfile,
+  getMembers,
   getOperationLogs,
+  getProfile,
   getRecords,
   getStudents,
   login,
   rechargeStudent,
   resetDemoData,
   showError,
+  submitFeedback,
   updateCourse,
+  updateMember,
   updateStudent,
   undoRecord
 };

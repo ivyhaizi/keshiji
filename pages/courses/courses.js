@@ -11,6 +11,7 @@ Page({
     editingCourseId: "",
     createForm: { ...emptyForm },
     editForm: { ...emptyForm },
+    permissions: {},
     loading: true
   },
 
@@ -23,7 +24,8 @@ Page({
     try {
       const data = await store.getCourses();
       this.setData({
-        courses: data.courses,
+        courses: data.courses || [],
+        permissions: data.permissions || {},
         loading: false
       });
     } catch (error) {
@@ -94,22 +96,25 @@ Page({
     const id = event.currentTarget.dataset.id;
     const course = this.data.courses.find((item) => item.id === id);
     if (!course) return;
-    this.setData({
-      editingCourseId: id,
-      editForm: {
-        name: course.name,
-        unit: String(course.unit)
+    this.setData(
+      {
+        editingCourseId: id,
+        editForm: {
+          name: course.name,
+          unit: String(course.unit)
+        }
+      },
+      () => {
+        wx.pageScrollTo({
+          selector: "#course-edit-form",
+          duration: 250
+        });
+        wx.showToast({
+          title: "已进入编辑",
+          icon: "none"
+        });
       }
-    }, () => {
-      wx.pageScrollTo({
-        selector: "#course-edit-form",
-        duration: 250
-      });
-      wx.showToast({
-        title: "已进入编辑",
-        icon: "none"
-      });
-    });
+    );
   },
 
   cancelEdit() {

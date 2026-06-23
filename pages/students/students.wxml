@@ -1,5 +1,5 @@
 <view class="page">
-  <view class="section" id="student-form">
+  <view wx:if="{{permissions.canManageStudents}}" class="section" id="student-form">
     <view class="section-title">{{editingStudentId ? '编辑学员课程' : '新增学员课程'}}</view>
     <view class="card form-card">
       <view class="field">
@@ -8,7 +8,7 @@
       </view>
       <view class="field">
         <text class="field-label">家长姓名</text>
-        <input class="input" placeholder="如：王妈妈" value="{{form.guardian}}" data-key="guardian" bindinput="onInput" />
+        <input class="input" placeholder="例如：陈妈妈" value="{{form.guardian}}" data-key="guardian" bindinput="onInput" />
       </view>
       <view class="field">
         <text class="field-label">联系电话</text>
@@ -22,7 +22,7 @@
       </view>
       <view class="field">
         <text class="field-label">初始课时</text>
-        <input class="input" type="digit" placeholder="如：20" value="{{form.remaining}}" data-key="remaining" bindinput="onInput" />
+        <input class="input" type="digit" placeholder="例如：20" value="{{form.remaining}}" data-key="remaining" bindinput="onInput" />
       </view>
       <view class="form-actions">
         <button class="primary-button" bindtap="saveStudent">{{editingStudentId ? '保存修改' : '保存学员'}}</button>
@@ -32,7 +32,7 @@
   </view>
 
   <view class="section">
-    <view class="section-title">学员-课程列表</view>
+    <view class="section-title">学员课程列表</view>
     <block wx:if="{{students.length}}">
       <view class="student card" wx:for="{{students}}" wx:key="id">
         <view class="student-main">
@@ -45,18 +45,18 @@
             <view class="student-hours-label">剩余课时</view>
           </view>
         </view>
-        <view class="student-actions">
-          <view class="list-button list-button-ghost" data-id="{{item.id}}" bindtap="recharge">充课时</view>
-          <view class="list-button list-button-primary" data-id="{{item.id}}" bindtap="todayCheckin">当日打卡</view>
-          <picker mode="date" data-id="{{item.id}}" bindchange="makeupCheckin">
+        <view wx:if="{{permissions.canRecharge || permissions.canCheckin || permissions.canManageStudents}}" class="student-actions">
+          <view wx:if="{{permissions.canRecharge}}" class="list-button list-button-ghost" data-id="{{item.id}}" bindtap="recharge">充课时</view>
+          <view wx:if="{{permissions.canCheckin}}" class="list-button list-button-primary" data-id="{{item.id}}" bindtap="todayCheckin">当日打卡</view>
+          <picker wx:if="{{permissions.canCheckin}}" mode="date" data-id="{{item.id}}" bindchange="makeupCheckin">
             <view class="list-button list-button-ghost picker-action">补打卡</view>
           </picker>
-          <view class="list-button list-button-ghost" data-id="{{item.id}}" bindtap="startEdit">编辑</view>
-          <view class="list-button list-button-danger" data-id="{{item.id}}" bindtap="deleteStudent">删除</view>
+          <view wx:if="{{permissions.canManageStudents}}" class="list-button list-button-ghost" data-id="{{item.id}}" bindtap="startEdit">编辑</view>
+          <view wx:if="{{permissions.canManageStudents}}" class="list-button list-button-danger" data-id="{{item.id}}" bindtap="deleteStudent">删除</view>
         </view>
       </view>
     </block>
-    <view wx:else class="card empty">暂无学员，先添加一个学员</view>
+    <view wx:else class="card empty">暂无学员课程</view>
   </view>
 
   <view wx:if="{{rechargeDialog.visible}}" class="dialog-mask" bindtap="cancelRecharge">

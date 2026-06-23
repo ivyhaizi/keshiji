@@ -10,7 +10,8 @@ Page({
     courseNames: ["全部课程"],
     courseIndex: 0,
     filterDate: "",
-    logs: []
+    logs: [],
+    permissions: {}
   },
 
   async onShow() {
@@ -22,10 +23,11 @@ Page({
     try {
       const data = await store.getStudents();
       this.setData({
-        students: data.students,
-        studentNames: ["全部学员"].concat(data.students.map((student) => student.name)),
-        courses: data.courses,
-        courseNames: ["全部课程"].concat(data.courses.map((course) => course.name))
+        students: data.students || [],
+        studentNames: ["全部学员"].concat((data.students || []).map((student) => student.name)),
+        courses: data.courses || [],
+        courseNames: ["全部课程"].concat((data.courses || []).map((course) => course.name)),
+        permissions: data.permissions || {}
       });
     } catch (error) {
       store.showError(error);
@@ -46,13 +48,15 @@ Page({
     try {
       const data = await store.getRecords(this.getFilters());
       this.setData({
+        permissions: data.permissions || this.data.permissions,
         records: (data.records || []).map((record) => ({
           ...record,
           status: record.status || "active",
-          canUndo: record.canUndo !== undefined
-            ? record.canUndo
-            : ["checkin", "recharge"].includes(record.type) && record.status !== "undone",
-          statusText: record.status === "undone" ? "已撤销" : (["checkin", "recharge"].includes(record.type) ? "可撤销" : "追溯记录")
+          canUndo:
+            record.canUndo !== undefined
+              ? record.canUndo
+              : ["checkin", "recharge"].includes(record.type) && record.status !== "undone",
+          statusText: this.getRecordStatusText(record)
         }))
       });
     } catch (error) {
@@ -61,9 +65,14 @@ Page({
   },
 
   async loadLogs() {
+    if (!this.data.permissions.canViewLogs) {
+      this.setData({ logs: [] });
+      return;
+    }
     try {
       const data = await store.getOperationLogs();
       this.setData({
+        permissions: data.permissions || this.data.permissions,
         logs: (data.logs || []).map((log) => ({
           ...log,
           actionText: this.getActionText(log.action)
@@ -74,9 +83,24 @@ Page({
     }
   },
 
+  getRecordStatusText(record) {
+    if (record.status === "undone") return "已撤销";
+    if (["checkin", "recharge"].includes(record.type)) return record.canUndo ? "可撤销" : "已生效";
+    return "追溯记录";
+  },
+
   getActionText(action) {
     const actionMap = {
+      course_create: "新增课程",
+      course_update: "修改课程",
+      course_delete: "删除课程",
       lesson_checkin: "打卡",
+      member_create: "新增成员",
+      member_update: "修改成员",
+      member_delete: "删除成员",
+      student_create: "新增学员",
+      student_update: "修改学员",
+      student_delete: "删除学员",
       student_recharge: "充值",
       lesson_record_undo: "撤销记录"
     };

@@ -2,19 +2,86 @@
   <view class="section">
     <view class="org-card">
       <view class="org-name">{{profile.org.name}}</view>
+      <view class="org-role">{{profile.membership.displayName || profile.roleName}} · {{profile.roleName}}</view>
     </view>
   </view>
 
-  <view class="section">
-    <view class="section-title">当前数据</view>
-    <view class="stats-card card">
-      <view class="profile-stat">
-        <view class="profile-stat-value">{{profile.totals.studentCount}}</view>
-        <view class="profile-stat-label">学员课程</view>
+  <view wx:if="{{profile.unbound}}" class="section">
+    <view class="section-title">创建新机构</view>
+    <view class="card join-card">
+      <view class="field">
+        <text class="field-label">机构名称</text>
+        <input class="input" placeholder="请输入机构名称" value="{{orgName}}" bindinput="onOrgNameInput" />
       </view>
-      <view class="profile-stat">
-        <view class="profile-stat-value">{{profile.totals.recordCount}}</view>
-        <view class="profile-stat-label">课时流水</view>
+      <button class="primary-button" bindtap="createOrg">创建并成为管理员</button>
+    </view>
+  </view>
+
+  <view wx:if="{{profile.unbound}}" class="section">
+    <view class="section-title">加入已有机构</view>
+    <view class="card join-card">
+      <view class="field">
+        <text class="field-label">成员绑定码</text>
+        <input class="input" placeholder="请输入管理员提供的绑定码" value="{{inviteCode}}" bindinput="onInviteCodeInput" />
+      </view>
+      <button class="ghost-button" bindtap="bindMember">绑定角色</button>
+    </view>
+  </view>
+
+  <view wx:if="{{profile.permissions.canManageMembers}}" class="section">
+    <view class="section-title">成员管理</view>
+    <view class="card member-form">
+      <view class="field">
+        <text class="field-label">成员姓名</text>
+        <input class="input" placeholder="例如：王老师" value="{{memberForm.displayName}}" data-key="displayName" bindinput="onMemberInput" />
+      </view>
+      <view class="field">
+        <text class="field-label">联系电话</text>
+        <input class="input" type="number" placeholder="可选" value="{{memberForm.phone}}" data-key="phone" bindinput="onMemberInput" />
+      </view>
+      <view class="field">
+        <text class="field-label">角色</text>
+        <picker range="{{roleNames}}" value="{{memberForm.roleIndex}}" bindchange="onRoleChange">
+          <view class="input picker-text">{{roleNames[memberForm.roleIndex]}}</view>
+        </picker>
+      </view>
+      <view wx:if="{{roleNames[memberForm.roleIndex] === '家长'}}" class="field">
+        <text class="field-label">绑定学员</text>
+        <picker range="{{studentNames}}" value="{{memberForm.studentIndex}}" bindchange="onStudentChange">
+          <view class="input picker-text">{{studentNames[memberForm.studentIndex] || '暂无学员'}}</view>
+        </picker>
+      </view>
+      <view class="member-form-actions">
+        <button class="primary-button" bindtap="saveMember">{{editingMemberId ? '保存修改' : '新增成员'}}</button>
+        <button wx:if="{{editingMemberId}}" class="ghost-button" bindtap="cancelMemberEdit">取消编辑</button>
+      </view>
+    </view>
+
+    <block wx:if="{{members.length}}">
+      <view class="member card" wx:for="{{members}}" wx:key="id">
+        <view class="member-main">
+          <view>
+            <view class="member-name">{{item.displayName}}</view>
+            <view class="member-meta">{{item.roleName}} · {{item.phone || '未填电话'}}</view>
+            <view wx:if="{{item.role === 'parent'}}" class="member-meta">绑定：{{item.boundStudentNames || '未绑定学员'}}</view>
+            <view wx:if="{{!item.isBound}}" class="member-note">绑定码：{{item.inviteCode}}</view>
+          </view>
+        </view>
+        <view class="member-actions">
+          <view class="list-button list-button-ghost" data-id="{{item.id}}" bindtap="startMemberEdit">编辑</view>
+          <view wx:if="{{!item.isCurrentUser}}" class="list-button list-button-danger" data-id="{{item.id}}" bindtap="deleteMember">删除</view>
+        </view>
+      </view>
+    </block>
+    <view wx:else class="card empty">暂无成员</view>
+  </view>
+
+  <view class="section">
+    <view class="section-title">意见反馈</view>
+    <view class="card info-card">
+      <view class="info-row" bindtap="openFeedbackDialog">
+        <text>提交反馈</text>
+        <text class="muted">填写问题或建议</text>
       </view>
     </view>
   </view>
@@ -29,6 +96,24 @@
       <view class="info-row">
         <text>数据保存</text>
         <text class="muted">微信云开发</text>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{feedbackDialogVisible}}" class="dialog-mask" bindtap="closeFeedbackDialog">
+    <view class="dialog card" catchtap="noop">
+      <view class="dialog-title">意见反馈</view>
+      <view class="field">
+        <text class="field-label">反馈内容</text>
+        <textarea class="textarea" maxlength="1000" placeholder="请输入问题、建议或使用感受" value="{{feedbackForm.content}}" data-key="content" bindinput="onFeedbackInput" />
+      </view>
+      <view class="field">
+        <text class="field-label">联系方式</text>
+        <input class="input" maxlength="100" placeholder="手机号、微信号或邮箱，可选" value="{{feedbackForm.contact}}" data-key="contact" bindinput="onFeedbackInput" />
+      </view>
+      <view class="dialog-actions">
+        <button class="dialog-button dialog-button-ghost" bindtap="closeFeedbackDialog">取消</button>
+        <button class="dialog-button dialog-button-primary" bindtap="submitFeedback">提交</button>
       </view>
     </view>
   </view>

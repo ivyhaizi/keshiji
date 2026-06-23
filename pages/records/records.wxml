@@ -45,7 +45,7 @@
     <view wx:else class="card empty">暂无记录</view>
   </view>
 
-  <view class="section">
+  <view wx:if="{{permissions.canViewLogs}}" class="section">
     <view class="section-title">操作日志</view>
     <block wx:if="{{logs.length}}">
       <view class="log card" wx:for="{{logs}}" wx:key="id">
@@ -53,7 +53,8 @@
           <view class="log-title">{{item.actionText}}</view>
           <view class="log-time">{{item.operatedAtText}}</view>
         </view>
-        <view class="log-detail">目标：{{item.targetType}} / {{item.targetId}}</view>
+        <view class="log-detail">操作者：{{item.operatorName || '-'}}</view>
+        <view class="log-detail">对象：{{item.targetType}} / {{item.targetId}}</view>
       </view>
     </block>
     <view wx:else class="card empty">暂无操作日志</view>

@@ -2,7 +2,7 @@
   <view class="hero">
     <view>
       <view class="hero-title">课时小伙伴</view>
-      <view class="hero-subtitle">教务、消课、记录一处管理</view>
+      <view class="hero-subtitle">学员、消课、记录一处管理</view>
     </view>
     <view class="hero-badge">免费使用</view>
   </view>
@@ -10,7 +10,7 @@
   <view class="stats-grid section">
     <view class="stat card">
       <view class="stat-value">{{stats.studentCount}}</view>
-      <view class="stat-label">学员</view>
+      <view class="stat-label">学员课程</view>
     </view>
     <view class="stat card">
       <view class="stat-value">{{stats.totalRemaining}}</view>
@@ -18,11 +18,11 @@
     </view>
   </view>
 
-  <view class="section">
+  <view wx:if="{{permissions.canManageStudents || permissions.canManageCourses}}" class="section">
     <view class="section-title">快捷操作</view>
     <view class="quick-actions">
-      <button class="primary-button" bindtap="goStudents">新增学员</button>
-      <button class="ghost-button" bindtap="goCourses">新增课程</button>
+      <button wx:if="{{permissions.canManageStudents}}" class="primary-button" bindtap="goStudents">新增学员</button>
+      <button wx:if="{{permissions.canManageCourses}}" class="ghost-button" bindtap="goCourses">新增课程</button>
     </view>
   </view>
 
@@ -35,12 +35,12 @@
             <view class="record-title">{{item.studentName}} · {{item.courseName}}</view>
             <view class="record-time">{{item.createdAt}}</view>
           </view>
-          <view class="record-hours {{item.type === 'recharge' ? 'plus' : ''}}">
-            {{item.type === 'recharge' ? '+' : '-'}}{{item.hours}}
+          <view class="record-hours {{item.direction === 'plus' ? 'plus' : ''}}">
+            {{item.direction === 'plus' ? '+' : '-'}}{{item.hours}}
           </view>
         </view>
       </block>
-      <view wx:else class="empty">暂无上课记录</view>
+      <view wx:else class="empty">暂无记录</view>
     </view>
   </view>
 </view>
