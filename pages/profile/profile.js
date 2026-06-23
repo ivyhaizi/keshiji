@@ -198,6 +198,20 @@ Page({
     });
   },
 
+  copyInviteCode(event) {
+    const inviteCode = event.currentTarget.dataset.code;
+    if (!inviteCode) {
+      wx.showToast({ title: "暂无绑定码", icon: "none" });
+      return;
+    }
+    wx.setClipboardData({
+      data: inviteCode,
+      success: () => {
+        wx.showToast({ title: "已复制" });
+      }
+    });
+  },
+
   deleteMember(event) {
     const id = event.currentTarget.dataset.id;
     const member = this.data.members.find((item) => item.id === id);

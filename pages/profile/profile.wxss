@@ -108,6 +108,21 @@
   color: #b45309;
 }
 
+.member-invite-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+
+.member-invite-row .member-note {
+  margin-top: 8rpx;
+}
+
+.member-copy-button {
+  margin-top: 8rpx;
+}
+
 .member-actions {
   display: flex;
   flex-wrap: wrap;

@@ -75,7 +75,10 @@
             <view class="member-name">{{item.displayName}}</view>
             <view class="member-meta">{{item.roleName}} · {{item.phone || '未填电话'}}</view>
             <view wx:if="{{item.role === 'parent'}}" class="member-meta">绑定：{{item.boundStudentNames || '未绑定学员'}}</view>
-            <view wx:if="{{!item.isBound}}" class="member-note">绑定码：{{item.inviteCode}}</view>
+            <view wx:if="{{!item.isBound}}" class="member-invite-row">
+              <view class="member-note">绑定码：{{item.inviteCode}}</view>
+              <view class="list-button list-button-ghost member-copy-button" data-code="{{item.inviteCode}}" bindtap="copyInviteCode">复制</view>
+            </view>
           </view>
         </view>
         <view class="member-actions">
